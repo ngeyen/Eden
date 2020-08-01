@@ -110,7 +110,6 @@ class Lexer:
         else:
             return Token(TT_FLOAT, float(num_str))
 
-
 ####################################
 # RUN
 ####################################
