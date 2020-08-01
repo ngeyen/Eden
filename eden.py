@@ -4,6 +4,21 @@
 
 DIGITS = '0123456789'
 
+
+
+class Error:
+    def __init__(self, error_name, details):
+        self.error_name = error_name
+        self.detais = @staticmethod
+    def as_string(self):
+        result = f'{self.error_name}: {self.detais}'
+        return result
+
+class IllegalCharError(Error):
+    def __init__(self, details):
+        super().__init__('Illegal Character', details)
+
+
 ########################
 # TOKEN TYPES
 ########################
@@ -68,8 +83,14 @@ class Lexer:
             elif self.current_char == ')':
                 tokens.append(Token(TT_RPAREN))
                 self.advance()
-        return tokens
+            
+            else:
+                char = self.current_char
+                self.advance()
+                return [], IllegalCharError("'" + char + "'")
         
+        return tokens, None
+
     def make_number(self):
         num_str =''
         dot_count = 0
@@ -85,3 +106,11 @@ class Lexer:
             return Token(TT_INT, INT(num_str))
         else:
             return Token(TT_FLOAT, float(num_str))
+
+# RUN
+
+def run(text):
+    lexer = Lexer(text)
+    token, error = lexer.make_tokens()
+
+    return token, error
